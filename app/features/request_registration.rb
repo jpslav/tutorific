@@ -41,7 +41,8 @@ class RequestRegistration
     if !@is_auditing && klass.is_preapproved?(@user) && (!klass.ended? || !Rails.env.production?)
       ApprovePendingStudent.new(student).execute
     else
-      StudentMailer.registration_pending(student).deliver  # likely a notification engine call instead
+      NotificationEngine.notify(:registration_pending, student)
+      # StudentMailer.registration_pending(student).deliver  # likely a notification engine call instead
     end
   end
 

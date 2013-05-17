@@ -21,36 +21,34 @@ class RequestRegistration
     user == @user
   end
 
-  def execute()
+  def execute
     # Run validations 
     return if !self.valid?
 
     # Create pending student
-
-    student = Student.new(@user, @section, @is_auditing)
-    student.save
-
-    # CreatePendingStudent.new(@user, @section, @is_auditing)
-    # Student.create(:user_id => user_id, :section_id => section_id, 
-    #                :is_auditing => is_auditing, :student_specified_id => student_specified_id)
-
-    # How to handle observers? (email, etc)
-
+    student = Student.create(user: @user, section: @section, is_auditing: @is_auditing)
 
     # Approve if preapproved
+    if !@is_auditing && klass.is_preapproved?(@user) && (!klass.ended? || !Rails.env.production?)
+      ApprovePendingStudent.new(student).execute
+    else
+      StudentMailer.registration_pending(student).deliver  # likely a notification engine call instead
+    end
+  end
 
+  def klass
+    @section.klass
   end
 
 private
 
-
   def user_not_already_in_course
     errors.add(:base, "You have either already requested to join this class or you are in this class.") \
-      if Query::is_user_in_klass?(@user, @section.klass)
+      if Query::is_user_in_klass?(@user, klass)
   end
 
   def researcher_not_registering
     errors.add(:base, 'You cannot register for this class because you are a system researcher.') \
-      if !@is_auditing && true #Query::is_user_a_researcher(@user)
+      if !@is_auditing && Query::is_user_a_researcher?(@user)
   end
 end

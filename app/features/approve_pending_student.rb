@@ -8,6 +8,7 @@ class ApprovePendingStudent
     @student.is_pending = false
     AssignStudentToCohort.new(@student).execute
     @student.save
+    NotificationEngine.notify(:registration_approved, student)
   end
 
 end

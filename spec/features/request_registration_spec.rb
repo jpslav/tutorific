@@ -33,6 +33,8 @@ describe RequestRegistration do
 
     rr = RequestRegistration.new(user, section, false)
     rr.stub(:klass) {klass}
+    NotificationEngine.should_receive(:notify)
+                      .with(:registration_pending, an_instance_of(Student))
     rr.execute
   end
 

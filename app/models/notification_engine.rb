@@ -5,6 +5,8 @@ class NotificationEngine
       case notification_type
       when :registration_pending
         # RegistrationPendingNotification.new(object)
+        #   which would call StudentMailer.registration_pending(student).deliver,
+        #   add a notification to the in-site messages, etc
       else
         raise Error
       end

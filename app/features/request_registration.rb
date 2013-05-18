@@ -42,7 +42,6 @@ class RequestRegistration
       ApprovePendingStudent.new(student).execute
     else
       NotificationEngine.notify(:registration_pending, student)
-      # StudentMailer.registration_pending(student).deliver  # likely a notification engine call instead
     end
   end
 

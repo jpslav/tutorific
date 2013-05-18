@@ -14,7 +14,6 @@ module Query
 
   def self.is_user_in_klass?(user,klass)
     KlassStudentUsers.new(klass).includes?(user)
-    # user.students.any?{|s| s.section.klass_id == klass.id}
   end
 
   def self.is_user_a_researcher?(user)

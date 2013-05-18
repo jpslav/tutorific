@@ -43,7 +43,7 @@ FactoryGirl.define do
 
   factory :section do
     klass
-    name "Section #{Faker::Lorem.words(2).join(' ')}"
+    sequence(:name)                 {|n| "AutoGen Section Name #{n}"}
   end
 
   factory :student do

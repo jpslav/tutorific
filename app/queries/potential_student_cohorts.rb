@@ -21,7 +21,7 @@ class PotentialStudentCohorts
     # students in the research reports.
 
     smallest_cohort_size = @relation.collect{|c| c.students.active.same_kind_as(self).count}.min
-    cohorts.select{|c| c.students.active.same_kind_as(self).count == smallest_cohort_size}
+    @relation.select{|c| c.students.active.same_kind_as(self).count == smallest_cohort_size}
   end
 
 end

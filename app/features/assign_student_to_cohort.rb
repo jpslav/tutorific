@@ -10,6 +10,7 @@ class AssignStudentToCohort
     # fewest members, she will be randomly assigned to one of them.
 
     @student.cohort = PotentialStudentCohorts.new(@student).smallest.sample
+    @student.save
   end
 
 end
